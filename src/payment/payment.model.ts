@@ -3,10 +3,10 @@ import { Document } from 'mongoose'
 
 @Schema({ timestamps: true })
 export class Payment {
-  @Prop()
+  @Prop({ required: true })
   amount: number;
 
-  @Prop()
+  @Prop({ required: true })
   fiatCurrency: string;
 
   @Prop()
@@ -15,16 +15,16 @@ export class Payment {
   @Prop()
   conversionRate: number;
 
-  @Prop()
+  @Prop({ required: true })
   receiverAddress: string;
 
-  @Prop()
+  @Prop({ required: true })
   customerAddress: string;
 
-  @Prop()
+  @Prop({ required: true })
   status: [string];
 
-  @Prop()
+  @Prop({ required: true })
   transactionHash: string;
 }
 
