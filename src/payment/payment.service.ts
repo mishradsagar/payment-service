@@ -8,7 +8,11 @@ import { Payment, PaymentDocument } from './payment.model'
 export class PaymentService {
   constructor (@InjectModel(Payment.name) private paymentModel: Model<PaymentDocument>) {}
 
-  async retrieveAll (): Promise<PaymentDocument[]> {
+  async retrieveAll () {
     return await this.paymentModel.find()
+  }
+
+  async create (userInfo) {
+    return await this.paymentModel.create(userInfo)
   }
 }

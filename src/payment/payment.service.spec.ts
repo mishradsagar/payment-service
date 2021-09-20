@@ -8,6 +8,16 @@ import { PaymentService } from './payment.service'
 describe('PaymentService', () => {
   let service: PaymentService
   let model: Model<PaymentDocument>
+  const user = {
+    amount: 50.00,
+    fiatCurrency: 'Dollar',
+    cryptoCurrency: 'Ether',
+    conversionRate: 0.00033,
+    receiverAddress: 'receiver address',
+    customerAddress: 'customer address',
+    status: 'pending',
+    transactionHash: 'hash'
+  }
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,5 +45,11 @@ describe('PaymentService', () => {
     const spy = jest.spyOn(model, 'find').mockResolvedValue([])
     await service.retrieveAll()
     expect(spy).toBeCalled()
+  })
+
+  it('should create a new payment record', async () => {
+    const spy = jest.spyOn(model, 'create').mockReturnValueOnce()
+    await service.create(user)
+    expect(spy).toBeCalledWith(user)
   })
 })

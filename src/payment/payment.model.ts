@@ -21,8 +21,8 @@ export class Payment {
   @Prop({ required: true })
   customerAddress: string;
 
-  @Prop({ required: true })
-  status: [string];
+  @Prop({ required: true, type: String, enum: ['started', 'pending', 'completed'] })
+  status: string;
 
   @Prop({ required: true })
   transactionHash: string;
