@@ -32,6 +32,11 @@ $ docker-compose up dev
 $ docker-compose up prod
 ```
 
+## Calling APIs with SwaggerUI
+
+- Swagger UI can be access on this route: http://localhost:3000/api. 
+- Swagger documentation includes all the required details to call the exposed APIs including examples and sample responses. 
+
 ## Stopping the app
 
 ```bash
@@ -54,8 +59,3 @@ $ npm run test
 # test coverage
 $ npm run test:cov
 ```
-
-## Swagger
-
-- Swagger UI can be access on this route: http://localhost:3000/api. 
-- Swagger documentation includes all the required details to call the exposed APIs including examples and sample responses. 
