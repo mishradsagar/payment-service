@@ -9,10 +9,22 @@ export class PaymentService {
   constructor (@InjectModel(Payment.name) private paymentModel: Model<PaymentDocument>) {}
 
   async retrieveAll () {
-    return await this.paymentModel.find()
+    return this.paymentModel.find()
   }
 
-  async create (userInfo) {
-    return await this.paymentModel.create(userInfo)
+  async retrieve (id: string) {
+    return this.paymentModel.findById(id)
+  }
+
+  async create (payment) {
+    return this.paymentModel.create(payment)
+  }
+
+  async delete (id: string) {
+    return this.paymentModel.deleteOne({ id })
+  }
+
+  async update (id: string, payment) {
+    return this.paymentModel.updateOne({ id }, { $set: { ...payment } }, { new: true })
   }
 }
