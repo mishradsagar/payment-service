@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
 import { Document } from 'mongoose'
 
 @Schema({ timestamps: true })
@@ -12,7 +12,7 @@ export class Payment {
   @Prop({ required: true })
   fiatCurrency: string;
 
-  @ApiProperty({ required: false, example: 'Ether'})
+  @ApiProperty({ required: false, example: 'Ether' })
   @Prop()
   cryptoCurrency: string;
 
@@ -28,7 +28,7 @@ export class Payment {
   @Prop({ required: true })
   customerAddress: string;
 
-  @ApiProperty({ required: true, example: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad' })
+  @ApiProperty({ required: true, example: 'started' })
   @Prop({ required: true, type: String, enum: ['started', 'pending', 'completed'] })
   status: string;
 

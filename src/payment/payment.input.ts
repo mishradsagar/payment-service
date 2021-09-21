@@ -48,3 +48,42 @@ export class PaymentIDDTO {
   @IsMongoId()
   id: string;
 }
+
+export class ListPayments {
+  @ApiProperty({ required: false, example: 'amount' })
+  @IsOptional()
+  @IsString()
+  sortBy?: string;
+
+  @ApiProperty({ required: false, example: 'ASC' })
+  @IsOptional()
+  @IsString()
+  @IsIn(['ASC', 'DESC'])
+  order?: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsEthereumAddress()
+  receiverAddress: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsEthereumAddress()
+  customerAddress: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  @IsIn(['started', 'pending', 'completed'])
+  status: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  fiatCurrency: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  cryptoCurrency: string;
+}

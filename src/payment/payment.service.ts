@@ -9,8 +9,8 @@ import { Payment, PaymentDocument } from './payment.model'
 export class PaymentService {
   constructor (@InjectModel(Payment.name) private paymentModel: Model<PaymentDocument>) {}
 
-  async retrieveAll () {
-    return this.paymentModel.find()
+  async retrieveAll (sortBy, order, filters) {
+    return this.paymentModel.find(filters).sort([[sortBy, order === 'ASC' ? 1 : -1]])
   }
 
   async retrieve (id) {

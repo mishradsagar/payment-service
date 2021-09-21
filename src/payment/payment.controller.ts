@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-constructor */
-import { BadRequestException, Body, Controller, Delete, Get, Logger, NotFoundException, Param, Post, Put } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Delete, Get, Logger, NotFoundException, Param, Post, Put, Query } from '@nestjs/common'
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
-import { PaymentDTO, PaymentIDDTO } from './payment.input'
+import { ListPayments, PaymentDTO, PaymentIDDTO } from './payment.input'
 import { Payment } from './payment.model'
 import { PaymentService } from './payment.service'
 
@@ -12,10 +12,10 @@ export class PaymentController {
   @ApiOperation({ summary: 'Get Payment Records' })
   @ApiOkResponse({ type: Payment, description: 'Get All Payment Records', isArray: true })
   @Get()
-  getPayments (): Promise<Payment[]> {
+  getPayments (@Query() { sortBy, order, ...filters } : ListPayments): Promise<Payment[]> {
     Logger.debug('getPayments called')
     try {
-      return this.paymentService.retrieveAll()
+      return this.paymentService.retrieveAll(sortBy, order, filters)
     } catch (err) {
       Logger.error(err)
       throw err
@@ -37,7 +37,7 @@ export class PaymentController {
 
   @ApiOperation({ summary: 'Get Payment Record Info' })
   @ApiOkResponse({ type: Payment, description: 'Get Payment Record' })
-  @ApiNotFoundResponse({ description: 'Payment record with given Id is not present'})
+  @ApiNotFoundResponse({ description: 'Payment record with given Id is not present' })
   @Get(':id')
   async getPaymentInfo (@Param() { id }: PaymentIDDTO): Promise<Payment> {
     Logger.debug('getPaymentInfo called')
