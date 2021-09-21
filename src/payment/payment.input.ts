@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsEthereumAddress, IsString, IsNumber, IsHash, IsIn, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsEthereumAddress, IsString, IsNumber, IsHash, IsIn, IsOptional, IsMongoId } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class PaymentDTO {
   @ApiProperty({ required: true, example: 50.00 })
   @IsNumber()
   @IsNotEmpty()
-  amount: string;
+  amount: number;
 
   @ApiProperty({ required: true, example: 'USD' })
   @IsString()
@@ -32,7 +32,7 @@ export class PaymentDTO {
   @IsEthereumAddress()
   customerAddress: string;
 
-  @ApiProperty({ required: true, example: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad' })
+  @ApiProperty({ required: true, example: 'started' })
   @IsString()
   @IsIn(['started', 'pending', 'completed'])
   status: string;
@@ -41,4 +41,10 @@ export class PaymentDTO {
   @IsString()
   @IsHash('sha256')
   transactionHash: string;
+}
+
+export class PaymentIDDTO {
+  @ApiProperty({ required: true })
+  @IsMongoId()
+  id: string;
 }
