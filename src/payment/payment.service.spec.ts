@@ -1,14 +1,12 @@
 /* eslint-disable no-undef */
 import { MongooseModule } from '@nestjs/mongoose'
 import { Test, TestingModule } from '@nestjs/testing'
-import { Model } from 'mongoose'
 import { closeInMongodConnection, rootMongooseTestModule } from '../../test/utils/mongoose.module'
-import { Payment, PaymentDocument, PaymentSchema } from './payment.model'
+import { Payment, PaymentSchema } from './payment.model'
 import { PaymentService } from './payment.service'
 
 describe('PaymentService', () => {
   let service: PaymentService
-  let model: Model<PaymentDocument>
   let payment: Payment
   const paymentInfo = {
     amount: 50.00,
@@ -52,19 +50,19 @@ describe('PaymentService', () => {
   })
 
   it('should retrieve payment record by Id', async () => {
-    const result = await service.retrieve(payment['_id'])
+    const result = await service.retrieve(payment._id)
     expect(result).toHaveProperty('_id')
   })
 
   it('should update a payment record', async () => {
-    await service.update(payment['_id'], { status: 'completed' })
-    const result = await service.retrieve(payment['_id'])
+    await service.update(payment._id, { status: 'completed' })
+    const result = await service.retrieve(payment._id)
     expect(result.status).toEqual('completed')
   })
 
   it('should delete a payment record', async () => {
-    await service.delete(payment['_id'])
-    const result = await service.retrieve(payment['_id'])
+    await service.delete(payment._id)
+    const result = await service.retrieve(payment._id)
     expect(result).toBeNull()
   })
 })
