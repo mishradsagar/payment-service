@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-constructor */
-import { BadRequestException, Body, Controller, Get, Logger, NotFoundException, Param, Post, Put } from '@nestjs/common'
-import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { BadRequestException, Body, Controller, Delete, Get, Logger, NotFoundException, Param, Post, Put } from '@nestjs/common'
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { PaymentDTO, PaymentIDDTO } from './payment.input'
 import { Payment } from './payment.model'
 import { PaymentService } from './payment.service'
@@ -40,7 +40,7 @@ export class PaymentController {
   @ApiNotFoundResponse({ description: 'Payment record with given Id is not present'})
   @Get(':id')
   async getPaymentInfo (@Param() { id }: PaymentIDDTO): Promise<Payment> {
-    Logger.debug('getPayments called')
+    Logger.debug('getPaymentInfo called')
     try {
       const record = await this.paymentService.retrieve(id)
 
@@ -60,7 +60,7 @@ export class PaymentController {
   @ApiBadRequestResponse({ description: 'Payment Record with the given id does not exists.' })
   @Put(':id')
   async updatePaymentInfo (@Param() { id }: PaymentIDDTO, @Body() payment: PaymentDTO): Promise<Payment> {
-    Logger.debug('getPayments called')
+    Logger.debug('updatePaymentInfo called')
     try {
       const record = await this.paymentService.retrieve(id)
 
@@ -69,6 +69,27 @@ export class PaymentController {
       }
 
       return this.paymentService.update(id, payment)
+    } catch (err) {
+      Logger.error(err)
+      throw err
+    }
+  }
+
+  @ApiOperation({ summary: 'Delete payment' })
+  @ApiOkResponse({ type: Payment, description: 'Delete payment record' })
+  @ApiBadRequestResponse({ description: 'Payment Record with the given id does not exists.' })
+  @Delete(':id')
+  async deletePaymentRecord (@Param() { id }: PaymentIDDTO): Promise<Payment> {
+    Logger.debug('deletePaymentRecord called')
+    try {
+      const record = await this.paymentService.retrieve(id)
+
+      if (!record) {
+        throw new BadRequestException('Payment Record with the given id does not exists.')
+      }
+
+      await this.paymentService.delete(id)
+      return record
     } catch (err) {
       Logger.error(err)
       throw err
