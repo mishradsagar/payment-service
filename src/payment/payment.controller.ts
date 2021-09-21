@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-constructor */
-import { Body, Controller, Get, Logger, NotFoundException, Param, Post } from '@nestjs/common'
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { BadRequestException, Body, Controller, Get, Logger, NotFoundException, Param, Post, Put } from '@nestjs/common'
+import { ApiBadRequestResponse, ApiConflictResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { PaymentDTO, PaymentIDDTO } from './payment.input'
 import { Payment } from './payment.model'
 import { PaymentService } from './payment.service'
@@ -49,6 +49,26 @@ export class PaymentController {
       }
 
       return record
+    } catch (err) {
+      Logger.error(err)
+      throw err
+    }
+  }
+
+  @ApiOperation({ summary: 'Update payment' })
+  @ApiOkResponse({ type: Payment, description: 'Update payment record' })
+  @ApiBadRequestResponse({ description: 'Payment Record with the given id does not exists.' })
+  @Put(':id')
+  async updatePaymentInfo (@Param() { id }: PaymentIDDTO, @Body() payment: PaymentDTO): Promise<Payment> {
+    Logger.debug('getPayments called')
+    try {
+      const record = await this.paymentService.retrieve(id)
+
+      if (!record) {
+        throw new BadRequestException('Payment Record with the given id does not exists.')
+      }
+
+      return this.paymentService.update(id, payment)
     } catch (err) {
       Logger.error(err)
       throw err
