@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-constructor */
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Logger } from '@nestjs/common'
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { Payment } from './payment.model'
 import { PaymentService } from './payment.service'
@@ -12,6 +12,12 @@ export class PaymentController {
   @ApiOkResponse({ type: Payment, description: 'Get All Payment Records', isArray: true })
   @Get('/')
   getPayments (): Promise<Payment[]> {
-    return this.paymentService.retrieveAll()
+    Logger.debug('getPayments called')
+    try {
+      return this.paymentService.retrieveAll()
+    } catch (err) {
+      Logger.error(err)
+      return err
+    }
   }
 }
