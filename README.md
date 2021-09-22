@@ -19,6 +19,12 @@ $ cd <project-directory>
 $ npm install
 ```
 
+## Building local image
+
+```bash
+$ docker build -t payment-service .
+```
+
 ## Running the app
 
 ```bash
